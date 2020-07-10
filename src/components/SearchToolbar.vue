@@ -353,8 +353,8 @@ export default {
     <QDialog
       :value="showFilterDialog"
       maximized
-      transition-show="slide-left"
-      transition-hide="slide-right"
+      transition-show="slide-right"
+      transition-hide="slide-left"
       content-class="filter-dialog"
       @hide="hideFilterDialog"
     >
