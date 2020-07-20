@@ -456,8 +456,15 @@ export default {
             :bg-color="message.senderId === currentUser.id
               ? (style.colorfulTheme ? 'primary' : 'grey-8')
               : style.colorfulTheme ? 'secondary' : lightBackgroundColor"
-            :stamp="getTimestamp(message.createdDate)"
-          />
+            :stamp="getTimestamp(message.createdDate)">
+            <template v-slot:avatar>
+              <AppAvatar
+                class="q-mx-sm"
+                :user="message.senderId === currentUser.id ? currentUser : inbox.interlocutor"
+                size="3rem"
+              />
+            </template>
+          </QChatMessage>
         </component>
 
         <QSeparator
