@@ -62,11 +62,11 @@
                 {{ displayNameInitial }}
               </div>
               <!-- Assuming file handler cropping is like background cover style -->
-              <QImg
+              <img
                 v-if="uploadingAvatarSrc || hasAvatar"
                 :src="uploadingAvatarSrc || avatarUrl"
                 class="full-height"
-              />
+              >
               <div
                 v-if="!uploadingAvatarSrc"
                 class="avatar-placeholder absolute-full flex column flex-center"
@@ -192,7 +192,7 @@
             <QIcon
               size="1.5rem"
               :color="selectedUser.emailVerified ? 'positive' : 'negative'"
-              :name="selectedUser.emailVerified ? 'check_circle' : 'announcement'"
+              :name="selectedUser.emailVerified ? icons.matCheckCircle : icons.matAnnouncement"
             >
               <AppContent
                 v-if="canValidateEmail && !selectedUser.emailVerified"
@@ -231,7 +231,7 @@
 /* global mapboxgl */
 import { mapState, mapGetters } from 'vuex'
 import { get } from 'lodash'
-import { matAccountCircle } from '@quasar/extras/material-icons'
+import { matAccountCircle, matAnnouncement, matCheckCircle } from '@quasar/extras/material-icons'
 
 import { isAssetId } from 'src/utils/id'
 
@@ -359,7 +359,9 @@ export default {
   },
   created () {
     this.icons = {
-      matAccountCircle
+      matAccountCircle,
+      matAnnouncement,
+      matCheckCircle
     }
   },
   methods: {

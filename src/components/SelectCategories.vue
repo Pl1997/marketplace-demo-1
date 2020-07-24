@@ -1,14 +1,7 @@
 <template>
   <QSelect
     ref="select"
-    :class="[
-      'stl-select-categories',
-      (textQueryLength < autocompleteMinChars) ||
-        (autocompleteMinChars && !filteredCategories.length) ||
-        selectedCategory ?
-          'stl-select-categories--hide-autocomplete'
-        : ''
-    ]"
+    class="stl-select-categories"
     v-bind="$attrs"
     :value="selectedCategory"
     :options="filteredCategories"
@@ -17,6 +10,7 @@
     :use-input="!(hideInputOnSelect && selectedCategory)"
     :loading="!!(textQueryLength && common.fetchingCategories)"
     :display-value="(selectedCategory && selectedCategory.name) || ''"
+    :hide-dropdown-icon="isDropdownIconHidden"
     @input="cat => selectCategory(cat)"
     @filter="filterCategories"
     @keyup.down.native="focusChanged"
@@ -97,7 +91,7 @@ export default {
       type: String,
       default: undefined
     },
-    initialCategory: {
+    setCategory: {
       type: Object,
       default: null
     },
@@ -112,7 +106,7 @@ export default {
   },
   data () {
     return {
-      selectedCategory: this.initialCategory,
+      selectedCategory: this.setCategory,
       filteredCategories: [],
       optionFocused: -1,
       textQueryLength: 0
@@ -129,9 +123,19 @@ export default {
 
       return this.sortCategoriesByLvl(values(categoriesById))
     },
+    isDropdownIconHidden () {
+      return (this.textQueryLength < this.autocompleteMinChars) ||
+        (this.autocompleteMinChars && !this.filteredCategories.length) ||
+        !!this.selectedCategory
+    },
     ...mapState([
       'common'
     ])
+  },
+  watch: {
+    setCategory (cat) {
+      this.selectedCategory = this.setCategory
+    }
   },
   mounted () {
     this.$store.dispatch('fetchCategories')
@@ -223,7 +227,4 @@ export default {
 // https://github.com/quasarframework/quasar/blob/v1.0.0-beta.6/quasar/src/components/select/select-menu-position.js#L51
 .stl-select-categories .q-local-menu
   top: 100%
-
-.stl-select-categories.stl-select-categories--hide-autocomplete .q-select__dropdown-icon
-  display: none
 </style>

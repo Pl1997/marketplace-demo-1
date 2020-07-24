@@ -7,14 +7,12 @@ import { matArrowForward, matSearch } from '@quasar/extras/material-icons'
 
 import AppSVGActionButton from 'src/components/AppSVGActionButton'
 import CustomAttributesEditor from 'src/components/CustomAttributesEditor'
-import DateRangePicker from 'src/components/DateRangePicker'
 import SelectCategories from 'src/components/SelectCategories'
 
 export default {
   components: {
     AppSVGActionButton,
     CustomAttributesEditor,
-    DateRangePicker,
     SelectCategories
   },
   data () {
@@ -108,8 +106,6 @@ export default {
     toggleSearchMap (visible) {
       this.$store.commit(mutationTypes.TOGGLE_SEARCH_MAP, { visible, save: true })
       this.$store.commit(mutationTypes.SEARCH__SET_MAP_OPTIONS, { useMapCenter: visible })
-
-      if (this.searchAfterMapMoveActive) this.triggerSearch()
     },
     toggleFilterDialog () {
       this.$store.commit(mutationTypes.TOGGLE_FILTER_DIALOG)
@@ -353,8 +349,8 @@ export default {
     <QDialog
       :value="showFilterDialog"
       maximized
-      transition-show="slide-left"
-      transition-hide="slide-right"
+      transition-show="slide-right"
+      transition-hide="slide-left"
       content-class="filter-dialog"
       @hide="hideFilterDialog"
     >
@@ -384,7 +380,7 @@ export default {
             @input="setDisplayPriceRange"
           />
 
-          <DateRangePicker
+          <AppDateRangePicker
             v-show="showDates"
             class="q-my-lg"
             :start-date="search.startDate"
@@ -401,7 +397,7 @@ export default {
               popup-content-class="search-filters__categories"
               :label="$t({ id: 'asset.category_label' })"
               :show-search-icon="false"
-              :initial-category="currentCategory"
+              :set-category="currentCategory"
               @change="selectCategory"
             />
           </div>
